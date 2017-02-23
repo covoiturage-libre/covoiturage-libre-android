@@ -4,10 +4,12 @@
     android:layout_height="match_parent"
     tools:context="com.esens.covoituragelibre.WebViewFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <WebView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/main_webview" />
 
 </FrameLayout>

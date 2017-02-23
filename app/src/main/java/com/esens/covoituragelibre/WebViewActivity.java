@@ -26,7 +26,7 @@ public class WebViewActivity extends AppCompatActivity {
         ActionBar actionBar = getActionBar();
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.covoituragelibre_logo);
+            //actionBar.setHomeAsUpIndicator(R.drawable.covoituragelibre_logo);
             actionBar.setDisplayUseLogoEnabled(false);
             actionBar.setIcon(R.drawable.covoituragelibre_logo);
         }
@@ -34,7 +34,7 @@ public class WebViewActivity extends AppCompatActivity {
 
         //Init main webview content
 
-        wvMainWeb = (WebView)this.findViewById(R.id.main_webview);
+        wvMainWeb = (WebView)this.findViewById(R.id.main_activity_webview);
 
         if(wvMainWeb != null){
 

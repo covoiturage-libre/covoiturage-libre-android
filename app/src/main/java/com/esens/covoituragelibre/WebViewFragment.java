@@ -1,12 +1,18 @@
 package com.esens.covoituragelibre;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 
 /**
@@ -51,13 +57,77 @@ public class WebViewFragment extends Fragment {
         if (getArguments() != null) {
             mUrl = getArguments().getString(ARG_URL);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_web_view, container, false);
+        View mView = inflater.inflate(R.layout.fragment_web_view, container, false);
+
+        //TODO: See lifecycle maybe not the place to put that
+        //Init main webview content
+
+        final WebView wvMainWeb = (WebView)mView.findViewById(R.id.main_webview);
+
+        if(wvMainWeb != null){
+
+            wvMainWeb.setWebChromeClient(new WebChromeClient());
+            WebSettings webSettings = wvMainWeb.getSettings();
+            webSettings.setJavaScriptEnabled(true);
+
+
+
+            wvMainWeb.setWebViewClient(new WebViewClient() {
+                @Override
+
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                    Log.e("WebViewClient", description);
+                    new AlertDialog.Builder(view.getContext()).setMessage("Error msg").setPositiveButton("ok", null).show();
+
+                }
+
+
+                //Little trick to remove nav part
+                // http://stackoverflow.com/questions/32828230/how-remove-header-from-webview-on-android
+                public void onPageFinished(WebView view, String url)
+                {
+                    wvMainWeb.loadUrl("javascript:(function() { " +
+                            "var navigation = document.getElementsByTagName('nav')[0];"
+                            + "navigation.parentNode.removeChild(navigation);" +
+                            "})()");
+                }
+                /*
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                    if(Uri.parse(url).getHost() != null){
+                        if (Uri.parse(url).getHost().equals("devt2.esens.fr")) {
+                            // This is my web site, so do not override; let my WebView load the page
+                            return false;
+                        }
+                    }
+
+                    // Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                    return true;
+
+                }*/
+            });
+
+
+
+            wvMainWeb.loadUrl(mUrl);
+
+
+
+        }
+
+
+        return mView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -70,12 +140,14 @@ public class WebViewFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
+
+        //TODO: See wtf is doing this methods
+        /*if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }
+        }*/
     }
 
     @Override

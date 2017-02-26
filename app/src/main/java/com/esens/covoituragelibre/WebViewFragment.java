@@ -2,9 +2,11 @@ package com.esens.covoituragelibre;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,12 +30,15 @@ public class WebViewFragment extends Fragment {
     public static final String ARG_URL = "url";
 
     private String mUrl;
+    private WebView wvMainWeb = null;
+
 
     private OnFragmentInteractionListener mListener;
 
     public WebViewFragment() {
         // Required empty public constructor
     }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -61,18 +66,26 @@ public class WebViewFragment extends Fragment {
 
     }
 
+
+    @Override
+    public void onSaveInstanceState(Bundle outState )
+    {
+        super.onSaveInstanceState(outState);
+        wvMainWeb.saveState(outState);
+    }
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View mView = inflater.inflate(R.layout.fragment_web_view, container, false);
 
-        //TODO: See lifecycle maybe not the place to put that
-        //Init main webview content
 
-        final WebView wvMainWeb = (WebView)mView.findViewById(R.id.main_webview);
-
+        wvMainWeb = (WebView)mView.findViewById(R.id.main_webview);
         if(wvMainWeb != null){
+
 
             wvMainWeb.setWebChromeClient(new WebChromeClient());
             WebSettings webSettings = wvMainWeb.getSettings();
@@ -85,7 +98,7 @@ public class WebViewFragment extends Fragment {
 
                 public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                     Log.e("WebViewClient", description);
-                    new AlertDialog.Builder(view.getContext()).setMessage("Error msg").setPositiveButton("ok", null).show();
+                    new AlertDialog.Builder(view.getContext()).setMessage("Impossible de charger la page").setPositiveButton("ok", null).show();
 
                 }
 
@@ -99,13 +112,18 @@ public class WebViewFragment extends Fragment {
                             + "navigation.parentNode.removeChild(navigation);" +
                             "})()");
                 }
-                /*
+
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
                     if(Uri.parse(url).getHost() != null){
-                        if (Uri.parse(url).getHost().equals("devt2.esens.fr")) {
-                            // This is my web site, so do not override; let my WebView load the page
+                        if (Uri.parse(url).getHost().equals(Uri.parse(mUrl).getHost())) {
+
+                            Intent intent = new Intent(getActivity() , WebViewActivity.class);
+                            intent.putExtra(WebViewActivity.WEB_URL_INTENT, url);
+                            intent.putExtra(WebViewActivity.WEB_TITLE_INTENT, "test");
+                            startActivity(intent);
+
                             return false;
                         }
                     }
@@ -115,7 +133,7 @@ public class WebViewFragment extends Fragment {
                     startActivity(intent);
                     return true;
 
-                }*/
+                }
             });
 
 

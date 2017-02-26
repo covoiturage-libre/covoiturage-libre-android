@@ -2,15 +2,22 @@ package com.esens.covoituragelibre;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class WebViewActivity extends AppCompatActivity {
+
+
+    public static String WEB_URL_INTENT= "url";
+    public static String WEB_TITLE_INTENT= "title";
 
     private WebView wvMainWeb = null;
 
@@ -19,21 +26,16 @@ public class WebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
 
-        //Define action bar logo
 
-        //getSupportActionBar().setIcon(R.drawable.covoituragelibre_logo);;
-
-        ActionBar actionBar = getActionBar();
-        if(actionBar != null){
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            //actionBar.setHomeAsUpIndicator(R.drawable.covoituragelibre_logo);
-            actionBar.setDisplayUseLogoEnabled(false);
-            actionBar.setIcon(R.drawable.covoituragelibre_logo);
+        //Récupération des infos INTENT
+        Intent mIntent = getIntent(); // gets the previously created intent
+        if(mIntent != null){
+            this.setTitle(mIntent.getStringExtra(WEB_TITLE_INTENT));
         }
 
 
-        //Init main webview content
 
+        //Init main webview content
         wvMainWeb = (WebView)this.findViewById(R.id.main_activity_webview);
 
         if(wvMainWeb != null){
@@ -84,7 +86,7 @@ public class WebViewActivity extends AppCompatActivity {
 
 
 
-            wvMainWeb.loadUrl("https://covoiturage-libre.fr/");
+            wvMainWeb.loadUrl(mIntent.getStringExtra(WEB_URL_INTENT));
 
 
 
@@ -92,6 +94,49 @@ public class WebViewActivity extends AppCompatActivity {
 
 
 
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                goBack();
+                return true;
+
+            /*case R.id.action_refresh:
+                reloadWebView();
+                return true;*/
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /*
+*Gestion du retour arriere avec le navigateur
+*/
+    private void goBack(){
+
+        if(wvMainWeb!=null && wvMainWeb.canGoBack()){
+            wvMainWeb.goBack();
+        }else{
+            NavUtils.navigateUpFromSameTask(this);
+        }
 
     }
+
+    public void reloadWebView(){
+
+        if(wvMainWeb!=null){
+            wvMainWeb.reload();
+        }
+    }
+
+
+
+
 }

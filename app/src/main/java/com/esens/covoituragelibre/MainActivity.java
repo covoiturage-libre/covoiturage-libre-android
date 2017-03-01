@@ -53,6 +53,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_search);
+
+        //Select first item
+        this.onNavigationItemSelected(navigationView.getMenu().getItem(0));
+
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -89,6 +95,8 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -99,16 +107,20 @@ public class MainActivity extends AppCompatActivity
 
 
         if (id == R.id.nav_search) {
-
             args.putString(WebViewFragment.ARG_URL, "https://covoiturage-libre.fr/");
 
-            // Handle the camera action
+        }else  if (id == R.id.nav_add) {
+            args.putString(WebViewFragment.ARG_URL, "https://covoiturage-libre.fr/trajets/nouveau");
+
         } else if (id == R.id.nav_blog) {
             args.putString(WebViewFragment.ARG_URL, "http://blog.covoiturage-libre.fr/");
+
         } else if (id == R.id.nav_contribute) {
             args.putString(WebViewFragment.ARG_URL, "http://wiki.covoiturage-libre.fr/index.php?title=Accueil");
+
         } else if (id == R.id.nav_give) {
             args.putString(WebViewFragment.ARG_URL, "https://www.helloasso.com/associations/covoiturage-libre-fr/collectes/campagne-courante/");
+
         } else if (id == R.id.nav_about) {
 
         }
@@ -123,7 +135,7 @@ public class MainActivity extends AppCompatActivity
         // Highlight the selected item has been done by NavigationView
         item.setChecked(true);
         // Set action bar title
-        setTitle(item.getTitle());
+        //setTitle(item.getTitle());
         // Close the navigation drawer
         mDrawerLayout.closeDrawers();
 

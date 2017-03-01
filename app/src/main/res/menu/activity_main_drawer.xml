@@ -4,15 +4,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_search"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Rechercher" />
+            android:icon="@drawable/ic_menu_search"
+            android:title="Rechercher un trajet" />
+        <item
+            android:id="@+id/nav_add"
+            android:icon="@drawable/ic_menu_add_circle_outline"
+            android:title="Ajouter un trajet" />
         <item
             android:id="@+id/nav_blog"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_menu_chat"
             android:title="Blog" />
         <item
             android:id="@+id/nav_give"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_card_giftcard"
             android:title="Faire un don" />
         <item
             android:id="@+id/nav_contribute"
@@ -22,7 +26,7 @@
 
     <item
         android:id="@+id/nav_about"
-        android:icon="@drawable/ic_menu_share"
+        android:icon="@drawable/ic_menu_help_outline"
         android:title="A propos..." />
 
 
